@@ -1,0 +1,150 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-info py-2">
+                    <h2>Unidades - <small class="text-light">Criação/Edição</small></h2>
+                </div>
+                <breadcrumb [breadcrumbs]="breadcrumbs"></breadcrumb>
+            </div>
+        </div>
+        <div class="col-12 pt-3 mb-3">
+            <div class="card p-3">
+                <form class="form pt-3" *ngIf="form" [formGroup]="form" enctype="multipart/form-data">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <form-input
+                                    [formGroup]="form"
+                                    elementId="name"
+                                    label="Nome"
+                                    placeholder=""
+                                    type="text"
+                                    masker=""
+                                    [cssClass]="applyErrorCss('name')"
+                                    [showLabel]="true"
+                                    [control]="form.get('name')"
+                                    (input)="onInput()"
+                                    [isReadOnly]="submittingForm"
+                                >
+                                </form-input>
+                            </div>
+                        </div>
+                        <div class="row" formGroupName="address">
+                            <div class="col-12 mt-3">
+                                <h3 class="text-light">Endereço</h3>
+                                <hr class="w-100 my-2">
+                            </div>
+                            <div class="col-md-4 mt-3">
+                                <mat-form-field  appearance="outline">
+                                    <mat-label>CEP</mat-label>
+                                    <input matInput
+                                        id="zipcode"
+                                        class="form-control"
+                                        color="primary" 
+                                        type="text"
+                                        (input)="onInput()"
+                                        [readonly]="!!isReadOnly" 
+                                        formControlName="zipcode"
+                                    >
+                                </mat-form-field>  
+                            </div>
+                            <div class="col-md-8 mt-3">
+                                <mat-form-field  appearance="outline">
+                                    <mat-label>Rua</mat-label>
+                                    <input matInput
+                                        id="street"
+                                        class="form-control"
+                                        color="primary" 
+                                        type="text"
+                                        mask="" 
+                                        (input)="onInput()"
+                                        [readonly]="!!isReadOnly" 
+                                        formControlName="street"
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2 mt-3">
+                                <mat-form-field  appearance="outline">
+                                    <mat-label>Nº</mat-label>
+                                    <input matInput
+                                        id="number"
+                                        class="form-control"
+                                        color="primary" 
+                                        type="number"
+                                        (input)="onInput()"
+                                        [readonly]="!!isReadOnly" 
+                                        formControlName="number"
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <mat-form-field  appearance="outline">
+                                    <mat-label>Complemento</mat-label>
+                                    <input matInput
+                                        id="complement"
+                                        class="form-control"
+                                        color="primary" 
+                                        type="text"
+                                        (input)="onInput()"
+                                        [readonly]="!!isReadOnly" 
+                                        formControlName="complement"
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-7 mt-3">
+                                <mat-form-field  appearance="outline">
+                                    <mat-label>Bairro</mat-label>
+                                    <input matInput
+                                        id="district"
+                                        class="form-control"
+                                        color="primary" 
+                                        type="text"
+                                        (input)="onInput()"
+                                        [readonly]="!!isReadOnly" 
+                                        formControlName="district"
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4 mt-3">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Cidade</mat-label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder=""
+                                           aria-label="Cidade"
+                                           matInput
+                                           (input)="onInput()"
+                                           [formControl]="getField('address.city')"
+                                           [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                        {{option}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2 mt-3">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Estado</mat-label>
+                                    <mat-select class="form-control" formControlName="uf">
+                                    <mat-option [disabled]="loading" *ngFor="let uf of ufs" [value]="uf.sigla">
+                                        {{uf.nome}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-3">
+                                <button (click)="submit()" mat-raised-button color="primary" class="p-2">
+                                    {{ currentAction == 'new' ? 'Criar' : 'Salvar alterações' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

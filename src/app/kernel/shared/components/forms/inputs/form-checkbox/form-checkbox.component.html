@@ -1,0 +1,31 @@
+<div class="form-control" [formGroup]="formGroup" [ngClass]="cssClass">
+    <label [attr.for]="elementId" class="checkbox-container" *ngIf="formGroupName" [formGroupName]="formGroupName">
+      <input
+        [id]="elementId"
+        class="form-checkbox"
+        type="checkbox"
+        label=""
+        [readonly]="!!isReadOnly"
+      />
+      <mat-label class="ml-2" *ngIf="showLabel">{{label}}</mat-label>
+      <div class="checkbox-border">
+        <div class="checkbox-filling" *ngIf="checked"></div>
+      </div>
+      <ng-content> </ng-content>
+    </label>
+    <label [attr.for]="elementId" class="checkbox-container" *ngIf="!formGroupName">
+      <input
+        [id]="elementId"
+        class="form-checkbox"
+        type="checkbox"
+        (change)="onModelChange($event)"
+        label=""
+        [readonly]="!!isReadOnly"
+      />
+      <mat-label [for]="elementId" class="ml-2" *ngIf="showLabel">{{label}}</mat-label>
+      <div class="checkbox-border">
+        <div class="checkbox-filling" *ngIf="checked"></div>
+      </div>
+      <ng-content> </ng-content>
+    </label>
+</div>

@@ -1,0 +1,11 @@
+<div class="breadcrumb">
+    <ul class="steps">
+      <li *ngFor="let item of breadcrumbs" class="step" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="item.path">
+          <!-- <pre>{{ item | json }} </pre> -->
+          <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+          <span>{{item.label}}</span>
+        </a>
+      </li>
+    </ul>
+</div>

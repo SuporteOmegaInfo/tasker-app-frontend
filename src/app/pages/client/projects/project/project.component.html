@@ -1,0 +1,78 @@
+<div class="container-fluid h-100" [ngStyle]="{ 'background-color' : project?.color, 'color' : getContrastYIQ(project?.color) }">
+  <div class="row" *ngIf="project">
+    <div class="col-12 topper-project-page" [ngStyle]="{
+      'background-color' : darkenColorPercent(project.color, 15),
+      'box-shadow' : styleCardShadow(darkenColorPercent(project.color, 15))
+      }">
+      <form *ngIf="form" [formGroup]="form" enctype="multipart/form-data">
+        <div style="flex: 3">
+          <input class="hidden-input w-100" type="text" formControlName="name">
+        </div>
+        <div style="flex: 2" class="date-group">
+          <small>Data de entrega: </small>
+          <input [matDatepicker]="picker" class="hidden-input ml-3 date-input" type="text" formControlName="expires_at">
+          <mat-datepicker-toggle color="primary" matTooltip="Alterar Data" matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <div style="flex: 1" class="time-group">
+          <input [ngxTimepicker]="timePicker" [format]="24" class="hidden-input ml-3 time-input" type="text" formControlName="expires_at_2">
+          <ngx-material-timepicker-toggle matTooltip="Alterar Hora" [for]="timePicker">
+            <mat-icon class="mr-1 picker-icon" matSuffix ngxMaterialTimepickerToggleIcon>timer</mat-icon>
+          </ngx-material-timepicker-toggle>
+          <ngx-material-timepicker [format]="24" #timePicker></ngx-material-timepicker>
+        </div>
+        <div style="flex: 1" >
+          <button
+            [ngClass]="{ loading: submittingForm }"
+            mat-icon-button
+            matTooltip="Membros"
+            (click)="openMembers()"
+          ><mat-icon [ngStyle]="{ 'color' : getContrastYIQ(project.color) }">group</mat-icon></button>
+        </div>
+        <div style="flex: 1">
+          <form-colorpicker
+            (changed)="refreshThemeColor()"
+            [control]="form.get('color')"
+          ></form-colorpicker>
+        </div>
+        <div style="flex: 1" >
+          <button
+            [ngClass]="{ loading: submittingForm }"
+            class="py-2"
+            *ngIf="form.dirty"
+            mat-raised-button
+            color="primary"
+          >Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-12 px-0"><hr [ngStyle]="{ 'border-color' : darkenColorPercent(project.color, 15)}" class="w-100"></div>
+  </div>
+  <!-- <div class="row">
+    <pre>{{ project | json }}</pre>
+  </div> -->
+  <div class="row" *ngIf="project">
+    <div class="col-12">
+      <div class="tasker-kanban py-3">
+        <div class="list add-button mr-3 px-3 text-center" [ngStyle]="{ 'background-color': lightenColorPercent(project.color, 50) }">
+          <div (click)="isAdding = true" class="flex-row-center-center py-3" *ngIf="!isAdding">
+            <mat-icon>add</mat-icon>
+            Adicionar nova Lista
+          </div>
+          <div class="flex-row-center-center py-3" *ngIf="isAdding">
+            <input placeholder="Nome da Lista" type="text" class="input-add-list">
+            <button mat-raised-button color="primary" class="p-2"><span style="color: #f1f1f1 !important">Incluir Lista</span></button>
+            <button (click)="isAdding = false" mat-icon-button color="primary"><mat-icon>close</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="!project">
+    <div class="col-12 mt-5 text-center">
+      <p class="mt-5">Carregando...</p>
+      <mini-loader></mini-loader>
+    </div>
+  </div>
+</div>
+<members-modal></members-modal>

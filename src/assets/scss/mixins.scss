@@ -1,0 +1,187 @@
+@mixin defaultTable() {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0.46875rem 2.1875rem rgb(8 10 37 / 3%),
+    0 0.9375rem 1.40625rem rgb(8 10 37 / 3%),
+    0 0.25rem 0.53125rem rgb(8 10 37 / 5%),
+    0 0.125rem 0.1875rem rgb(8 10 37 / 3%);
+  border-width: 0;
+  transition: all 0.2s;
+  border-radius: 5px;
+
+  th {
+    color: $text-light-color;
+    text-align: left;
+    border-bottom: thin solid $light-gray;
+    transition: width 1.5s ease, max-width 1.5s ease;
+    background-color: #f1f1f1;
+    &:not(:last-child){
+      border-right: 1px solid $light-gray;
+    }
+
+    &:first-child{
+      border-top-left-radius: 5px;
+    }
+
+    &:last-child{
+      border-top-right-radius: 5px;
+    }
+  }
+
+  td {
+    transition: width 1.5s ease, max-width 1.5s ease;
+    color: $text-color;
+    button {
+      width: 30px;
+      height: 30px;
+      margin: 0px 10px;
+      border-radius: 50%;
+      padding: 2px;
+    }
+    .btn-edit {
+      background-color: $success;
+
+      &:hover {
+        background-color: $success-hover;
+      }
+    }
+    .btn-delete {
+      background-color: $danger;
+
+      &:hover {
+        background-color: $danger-hover;
+      }
+    }
+    &:not(:last-child){
+      border-right: 1px solid $light-gray;
+    }
+  }
+
+  th,
+  td {
+    padding: 15px 15px;
+  }
+
+  tr{
+    &:first-child{
+      border-bottom: 2px solid $light-gray;
+    }
+    &:last-child{
+      td{
+        &:first-child{
+          border-bottom-left-radius: 5px;
+        }
+        &:last-child{
+          border-bottom-right-radius: 5px;
+        }
+      }
+    }
+    &:not(:first-child){
+      border-bottom: 1px solid $light-gray;
+    }
+    &:not(:last-child){
+      border-bottom: 1px solid $light-gray;
+    }
+  }
+}
+
+/* TRANSITIONS */
+@mixin trxAll($time) {
+    transition: all $time ease-in-out;
+}
+
+/* FLEX*/
+@mixin flex-row-center-center() {
+    display: flex;
+    flex-direction: row ;
+    align-items: center ;
+    justify-content: center ;
+    flex-wrap: wrap;
+}
+.flex-row-center-center{
+    @include flex-row-center-center();
+}
+@mixin flex-row-center-start() {
+    display: flex ;
+    flex-direction: row ;
+    align-items: center ;
+    justify-content: flex-start ;
+}
+.flex-row-center-start{
+  @include flex-row-center-start();
+}
+@mixin flex-row-start-start() {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.flex-row-start-start{
+@include flex-row-start-start();
+}
+@mixin flex-row-center-end() {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+@mixin flex-column-start-center() {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.flex-column-start-center{
+  @include flex-column-start-center();
+}
+
+@mixin flex-column-start-start() {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+@mixin flex-column-center-center() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.flex-column-center-center{
+  @include flex-column-center-center();
+}
+
+@mixin flex-row-center-space-between() {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-row-start-start() {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+@mixin flex-wrap() {
+    flex-wrap: wrap;
+}
+
+@mixin border-radius($size) {
+    border-radius: $size;
+}
+
+@mixin box-shadow($color) {
+  box-shadow: 1px 1px 3px $color;
+}
+@mixin box-md-shadow($color) {
+  box-shadow: 3px 3px 5px $color;
+}
+
+@mixin box-shadow-to-bottom($color) {
+  box-shadow: 1px 3px 5px $color;
+}

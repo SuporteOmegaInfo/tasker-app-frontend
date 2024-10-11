@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-info py-2">
+                    <h2>{{tableOptions.entityData.pluralName}} - <small class="text-light">Listagem</small></h2>
+                </div>
+                <breadcrumb [breadcrumbs]="breadcrumbs"></breadcrumb>
+            </div>
+        </div>
+        <div class="col-12 pt-3">
+          <div scrollHeader class="menu-actions">
+                <div class="container-fluid px-0">
+                    <div class="row">
+                        <div [ngClass]="cssButtonAddResource()">
+                            <a *ngIf="hasPermissions(tableOptions.tableRuler.create)" routerLink="new" mat-raised-button class="p-2 page_heading_action_button" color="primary">
+                              Adicionar {{tableOptions.entityData.singularName}}
+                            </a>
+                        </div>
+                        <div [ngClass]="cssPaginator()" class="col-md-9">
+                            <app-table-paginator [filters]="resources?.filters" [pagination]="resources?.pagination" (changed-pagination)="paginate($event)" (changed-filters)="initialize($event)"></app-table-paginator>
+                        </div>
+                    </div>
+                </div>
+          </div>
+        </div>
+        <div class="col-12 pt-3 mb-3">
+            <div class="card">
+                <table-default
+                    [params]="tableOptions"
+                    [data]="resources?.data"
+                    (deleteItem)="deleteResource($event)"
+                ></table-default>
+            </div>
+        </div>
+    </div>
+</div>

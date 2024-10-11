@@ -1,0 +1,88 @@
+<!-- Texto/Numero -->
+<span *ngIf="field.type === 'text'" [class]="field.classField">
+    {{ parseValue(item) }}
+</span>
+  
+<!-- Moeda -->
+<span *ngIf="field.type === 'currency'" [class]="field.classField">
+    {{
+      item
+        ? parseValue(item) > 999999
+          ? (parseValue(item) | currency: "BRL")
+              .replace(".", ",")
+              .replace(",", ".")
+              .replace(",", ".")
+          : (parseValue(item) | currency: "BRL")
+              .replace(".", ",")
+              .replace(",", ".")
+        : "Não informado"
+    }}
+</span>
+  
+<!-- Data -->
+<span *ngIf="field.type === 'date'" [class]="field.classField">
+    {{ item | date: "dd/MM/yyyy" }}
+    <small [class]="field.props.class" *ngIf="item == null">{{
+      field.props.ifnull
+    }}</small>
+</span>
+  
+<!-- Data completa -->
+<span *ngIf="field.type === 'date-full' && item != null; else date_empty" [class]="field.classField">
+    {{ parseValue(item) | date: "dd/MM/yyyy - HH:mm" }}
+</span>
+<ng-template #date_empty>
+  <span [class]="field.props.class">
+    {{ field.props.ifnull }}
+  </span>
+</ng-template>
+  
+<!-- Imagem -->
+<img
+    *ngIf="field.type === 'image'"
+    [src]="checkImage(item)"
+    [width]="imageWidth()"
+    [height]="imageHeight()"
+    [class]="field.props.cssClass"
+/>
+  
+<!-- Icone com Pré Definições -->
+<span *ngIf="field.type === 'icon-preset'">
+    <mat-icon [style]="'color: ' + field.props[item]?.color">{{
+      field.props[item]?.icon
+    }}</mat-icon>
+</span>
+  
+  <!-- Badge com Pré Definições -->
+<div
+[attr.class]="
+    'badge table-small-badge ' + field?.props[item].cssClass
+"
+*ngIf="field.type === 'badge-preset'"
+>
+    <span>
+      {{ field?.props[item].label }}
+    </span>
+</div>
+
+<div *ngIf="field.type === 'activity-status-indicator'">
+  <div [ngSwitch]="item">
+    <div class="flex-row-center-start" *ngSwitchCase="'pending'">
+      <mat-icon>timer</mat-icon>
+      <span>Aguardando início</span>
+    </div>
+    <div class="flex-row-center-start" *ngSwitchCase="'progress'">
+      <div class="activity-indicator mx-3"></div>
+      <span>Andamento...</span>
+    </div>
+    <div class="flex-row-center-start" *ngSwitchCase="'completed'">
+      <mat-icon>check_circle</mat-icon>
+      <span>Finalizado</span>
+    </div>
+    <div class="flex-row-center-start" *ngSwitchCase="'error'">
+      <mat-icon>error</mat-icon>
+      <span>Cencelado</span>
+    </div>
+  </div>
+
+</div>

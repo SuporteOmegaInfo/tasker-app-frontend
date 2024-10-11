@@ -1,0 +1,52 @@
+<app-modal [clickClose]="false" id="members-project" cssClass="modal-sm zoom-modal">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="ml-3">Membros</h2>
+      <button matTooltip="Cancelar" color="primary" mat-icon-button><mat-icon color="primary">close</mat-icon></button>
+    </div>
+    <div class="modal-body" *ngIf="data">
+      <form *ngIf="form" [formGroup]="form" enctype="multipart/form-data">
+        <div class="container fluid">
+          <div class="row">
+            <div class="col-12">
+              <h2>Membros selecionados</h2>
+              <hr class="w-100">
+            </div>
+            <div *ngIf="membersArray?.value?.length == 0" class="col-12 mt-3 flex-row-center-start">
+              <div class="alert warning">Nenhum usuário foi selecionado</div>
+            </div>
+            <div class="col-12 mt-3 flex-row-center-start" *ngFor="let item of membersArray?.value">
+              <figure class="mini-avatar mb-0 mr-3"><img src="./../../../../../../assets/images/avatar.webp"></figure> {{ item.name }}
+              <button class="btn-remove-avatar" matTooltip="Remover {{ item.name }}" color="primary" (click)="removeMember(i)" mat-icon-button><mat-icon color="primary">close</mat-icon></button>
+            </div>
+            <div class="col-12 mt-3">
+              <h2>Selecionar membros</h2>
+              <hr class="w-100">
+            </div>
+            <div *ngIf="membersList?.length == 0" class="col-12 mt-3 flex-row-center-start">
+              <div class="alert warning">Nenhum usuário foi encontrado para ser selecionado</div>
+            </div>
+            <div class="col-12 mt-3 flex-row-center-start" *ngFor="let item of membersList">
+              <figure class="mini-avatar mb-0 mr-3"><img src="./../../../../../../assets/images/avatar.webp"></figure> {{ item.name }}
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <button
+              mat-raised-button
+              color="primary"
+              class="p-3"
+            >Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</app-modal>

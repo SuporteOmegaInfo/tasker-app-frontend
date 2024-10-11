@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 my-3">
+            <h2>Adicionar Item ao checklist</h2>
+        </div>
+        <div class="col-12 mt-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Nome</mat-label>
+                <input
+                    matInput
+                    class="form-control"
+                    [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="item.name"
+                    type="text"
+                >
+            </mat-form-field>
+        </div>
+        <div class="col-12 mt-4">
+            <mat-form-field class="form-textarea" appearance="outline">
+                <mat-label class="form-label">Descrição do item</mat-label>
+                <textarea matInput class="py-3" rows="5" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.description" type="text"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="col-12 mt-4">
+            <h3 class="mb-2">Status</h3>
+            <mat-button-toggle-group class="w-100" [(ngModel)]="item.status" aria-label="Status">
+                <mat-button-toggle class="danger p-3 w-50" value="disabled">Desativado</mat-button-toggle>
+                <mat-button-toggle class="success p-3 w-50" value="active">Ativo</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+        <div class="col-12 mt-4">
+            <div class="checklist-options-register-header-area">
+                <h3 class="mb-2">Setup de opções</h3>
+                <button (click)="addParameter()" mat-button color="primary">Adicionar opção<mat-icon>library_add</mat-icon></button>
+            </div>
+            <div class="checklist-options-register-box">
+                <div class="option my-3" *ngFor="let option of item.parameters; let i = index">
+                  <mat-form-field class="option-input" appearance="outline">
+                      <mat-label>Opção {{ i+1 }}</mat-label>
+                      <input
+                        matInput
+                        class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="item.parameters[i].value"
+                        type="text"
+                      >
+                  </mat-form-field>
+                  <button (click)="removeParameter(i)" class="option-btn-remove" mat-icon-button color="warn"><mat-icon>remove_circle</mat-icon></button>
+                </div>
+                <div class="alert info" *ngIf="item?.parameters?.length == 0">
+                    <p>Nenhuma opção adicionada</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 my-4">
+            <button (click)="emitSubmitted()" class="p-2" mat-raised-button color="primary">Salvar</button>
+        </div>
+    </div>
+</div>

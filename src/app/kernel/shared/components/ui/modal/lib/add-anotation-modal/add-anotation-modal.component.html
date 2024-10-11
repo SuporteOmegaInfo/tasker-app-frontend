@@ -1,0 +1,24 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Adicionar Anotação</h5>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <p>Adicione aqui as anotações que deseja registrar.</p>
+            </div>
+            <div class="col-12 mt-4">
+              <mat-form-field class="form-textarea" appearance="outline">
+                <mat-label class="form-label">Anotação</mat-label>
+                <textarea matInput class="py-3" rows="5" [ngModelOptions]="{standalone: true}" [(ngModel)]="newAnotation" type="text"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="close()" class="p-2 mr-3" mat-raised-button color="warn" >Cancelar</button>
+        <button (click)="send()" class="p-2" mat-raised-button color="primary" >Salvar Anotação</button>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<mat-form-field
+  [formGroup]="formGroup"
+  class="form-control"
+  appearance="outline"
+>
+  <mat-label>{{label}}</mat-label>
+  <mat-select aria-label="{{elementId}}" [id]="elementId" [formControlName]="elementId">
+    <mat-option [disabled]="isReadOnly" *ngFor="let opt of options" [value]="opt.value">
+      {{opt.label}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<form-field-error [control]="control" [label]="label"></form-field-error>

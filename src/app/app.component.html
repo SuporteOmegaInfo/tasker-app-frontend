@@ -1,0 +1,8 @@
+<main id="content" [ngStyle]="{'overflow' : loading ? 'hidden' : 'auto'}">
+  <navbar *ngIf="showMenu"></navbar>
+  <sidebar *ngIf="showMenu"></sidebar>
+  <div class="page-content" [ngStyle]="cssPageContentAdjust()">
+    <router-outlet></router-outlet>
+  </div>
+  <page-loader *ngIf="loading"></page-loader>
+</main>

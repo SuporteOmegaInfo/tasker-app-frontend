@@ -1,0 +1,131 @@
+<div class="card-add" style="min-height: 118px;">
+  <button class="button-add" mat-raised-button (click)="openModal()">
+    Adicionar Projeto
+  </button>
+</div>
+
+<app-modal [clickClose]="false" id="add-project" cssClass="modal-sm zoom-modal">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="ml-3">Novo Projeto</h2>
+      <button matTooltip="Cancelar" color="primary" (click)="closeModal()" mat-icon-button><mat-icon color="primary">close</mat-icon></button>
+    </div>
+    <div class="modal-body">
+
+      <form class="form" *ngIf="form" [formGroup]="form" enctype="multipart/form-data" (click)="$event.stopPropagation();">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <form-input
+                  [formGroup]="form"
+                  elementId="name"
+                  label="Nome"
+                  placeholder=""
+                  type="text"
+                  masker=""
+                  [cssClass]="applyErrorCss('name')"
+                  [showLabel]="true"
+                  [control]="form.get('name')"
+                  (input)="onInput()"
+                  [isReadOnly]="submittingForm"
+              >
+              </form-input>
+            </div>
+            <div class="col-12 mt-3">
+              <form-colorpicker
+                [showPrev]="true"
+                [control]="form.get('color')"
+              ></form-colorpicker>
+            </div>
+            <div class="col-12 mt-3">
+              <form-datepicker
+                  [formGroup]="form"
+                  elementId="expires_at"
+                  label="Data de entrega"
+                  placeholder=""
+                  type="text"
+                  masker=""
+                  [cssClass]="applyErrorCss('expires_at')"
+                  [showLabel]="true"
+                  [control]="form.get('expires_at')"
+                  (input)="onInput()"
+              >
+              </form-datepicker>
+            </div>
+            <div class="col-12 mt-3">
+              <form-timepicker
+                  [formGroup]="form"
+                  elementId="expires_at_2"
+                  label="Hora de entrega"
+                  placeholder=""
+                  type="text"
+                  masker=""
+                  [cssClass]="applyErrorCss('expires_at_2')"
+                  [showLabel]="true"
+                  [control]="form.get('expires_at_2')"
+                  (input)="onInput()"
+              >
+              </form-timepicker>
+            </div>
+            <div class="col-12 mt-3">
+              <hr class="w-100">
+            </div>
+            <div class="col-12 mt-3">
+              <h3>Membros:</h3>
+            </div>
+            <div class="col-12 mt-3">
+              <div class="members-list">
+                <div class="container-fluid">
+                  <div class="row" #members>
+                    <div class="col-12 col-md-3" *ngFor="let item of membersArray.value; let i = index">
+                      <div class="mid-avatar members-avatar fadeIn" [attr.id]="'member-' + i">
+                        <figure class="mb-0 mr-3"><img src="./../../../../../../assets/images/avatar.webp"></figure>
+                        <span>{{ item.name }}</span>
+                        <button class="btn-remove-avatar" matTooltip="Remover {{ item.name }}" color="primary" (click)="removeMember(i)" mat-icon-button><mat-icon color="primary">close</mat-icon></button>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                      <button [matMenuTriggerFor]="addMemberMenu" (click)="loadMembers()" style="width: 50px; height: 50px;" mat-icon-button>
+                        <mat-icon>add</mat-icon>
+                      </button>
+                      <mat-menu #addMemberMenu="matMenu">
+                        <div (click)="$event.stopPropagation();">
+                          <div class="alert info" *ngIf="usersAvailableToAdd()?.length == 0">
+                            Nenhum usuário encontrado
+                          </div>
+                          <button (click)="addMember(item)" color="primary" class="nav-link" mat-menu-item *ngFor="let item of usersAvailableToAdd()">
+                            <div class="flex-link">
+                              <figure class="mini-avatar mb-0 mr-3"><img src="./../../../../../../assets/images/avatar.webp"></figure> {{ item.name }}
+                            </div>
+                          </button>
+                        </div>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <button
+              [ngClass]="{ loading: submittingForm }"
+              (click)="submit()"
+              mat-raised-button
+              color="primary"
+              class="p-3"
+            >Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</app-modal>

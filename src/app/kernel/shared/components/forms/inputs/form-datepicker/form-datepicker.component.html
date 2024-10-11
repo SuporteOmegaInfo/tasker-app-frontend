@@ -1,0 +1,28 @@
+<mat-form-field [formGroup]="formGroup"  class="form-control" appearance="outline" *ngIf="!loading">
+    <mat-label>{{label}}</mat-label>
+    <input
+        matInput
+        [matDatepicker]="picker"
+        [id]="elementId"
+        color="primary"
+        [type]="type"
+        [readonly]="true"
+        [formControlName]="elementId"
+        [placeholder]="placeholder"
+    >
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+    <button class="clear-input-button" *ngIf="control.value != null" matTooltip="Limpar" color="primary" (click)="resetValue()" mat-icon-button><mat-icon color="primary">close</mat-icon></button>
+
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<form-field-error [control]="control" [label]="label"></form-field-error>
+
+<div class="form-control-group" [ngClass]="cssClass" *ngIf="loading">
+
+    <div class="skeleton-loading" style="height: 100%; width: 100%;">
+        <div class="bar"></div>
+    </div>
+
+</div>

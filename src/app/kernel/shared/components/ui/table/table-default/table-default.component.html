@@ -1,0 +1,48 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th *ngFor="let field of tableParams.tableFields">{{ field.name }}</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableData">
+            <td *ngFor="let param of tableParams.tableFields">
+                <table-field
+                    [item]="findItemOnScaleOrNo(data, param)"
+                    [field]="param"
+                ></table-field>
+            </td>
+            <td class="table-actions">
+                <div *ngFor="let btn of tableParams.extraButtons">
+                    <button *ngIf="checkRulerExtraButton(btn.action)" (click)="sendExtraButtonAction(btn.action, data)" [matTooltip]="btn.label" color="primary" mat-icon-button>
+                        <mat-icon class="m-0">{{btn.icon}}</mat-icon>
+                    </button>
+                </div>
+                <button *ngIf="checkRulerEdit(data)" (click)="openEdit(data)" matTooltip="Editar" color="primary" mat-icon-button>
+                    <mat-icon class="m-0">edit_note</mat-icon>
+                </button>
+                <button *ngIf="checkRulerDelete(data)" (click)="openDelete(data)" matTooltip="Deletar" color="warn" mat-icon-button>
+                    <mat-icon class="m-0">delete_sweep</mat-icon>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="tableData?.length == 0">
+            <td [attr.colspan]="tableParams.tableFields.length+1">
+                <div class="alert info">
+                    Nenhum item para exibição
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-modal id="confirm-delete" cssClass="modal-sm zoom-modal">
+
+    <confirm
+        (confirmation)="confirmDelete($event)"
+        [item]="itemConfirm"
+        text="Deseja realmente deletar este registro? Esta ação não pode ser desfeita."
+    ></confirm>
+
+</app-modal>

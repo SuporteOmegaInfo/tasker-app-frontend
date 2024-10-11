@@ -1,0 +1,16 @@
+<mat-form-field [ngClass]="cssFullWidth()" [formGroup]="formGroup" appearance="outline">
+    <mat-label *ngIf="showLabel">{{label}}</mat-label>
+    <input matInput
+        [id]="elementId"
+        class="form-control"
+        color="primary"
+        [type]="type"
+        [mask]="masker"
+        [readonly]="!!isReadOnly"
+        [formControlName]="elementId"
+        [placeholder]="placeholder"
+        autocomplete="on"
+    >
+    <mat-icon color="primary" matSuffix>{{icon}}</mat-icon>
+</mat-form-field>
+<form-field-error [control]="control" [label]="label"></form-field-error>

@@ -1,0 +1,54 @@
+<header *ngIf="showMenu">
+    <nav class="navbar trx-all">
+        <div class="navbar-left">
+            <a routerLink="/" class="navbar-brand mr-3">
+                <figure class="mb-0">
+                  <img src="./assets/images/logo.webp" alt="Site Logo">
+                </figure>
+            </a>
+            <!-- <button
+                (click)="toggleSidebar()"
+                [ngClass]="cssButtonSidebar()"
+                id="burger"
+                class="burger-elastic burger p-4"
+            >
+                <div class="burger-box">
+                  <div class="burger-inner"></div>
+                </div>
+            </button> -->
+        </div>
+        <div class="navbar-center">
+            <ul class="navbar-items" style="list-style: none;">
+                <li *ngFor="let item of navbar_items">
+                    <a [routerLink]="item.path" routerLinkActive="active">
+                        <mat-icon>{{ item.icon }}</mat-icon>
+                        <span>{{ item.name }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-right">
+
+            <button
+                mat-button
+                [matMenuTriggerFor]="navbarMenu"
+                class="mr-2"
+            >
+                <figure class="user-avatar mb-0">
+                    <img src="./../../../../../../assets/images/avatar.webp">
+                </figure>
+            </button>
+            <mat-menu class="menu-dark" #navbarMenu="matMenu">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="p-2 w-100" mat-raised-button color="primary" (click)="logout()">Sair</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-menu>
+
+            <p class="text-primary" style="font-weight: bold;">{{ currentUser?.name || 'Visitante' }}</p>
+        </div>
+    </nav>
+</header>

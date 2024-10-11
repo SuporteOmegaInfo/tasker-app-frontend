@@ -1,0 +1,40 @@
+<!-- carousel -->
+<div class="carousel">
+    <ng-container *ngFor="let slide of slides; let i = index">
+      <!-- <img
+        *ngIf="i === currentSlide"
+        [src]="slide.src"
+        class="slide"
+        [ngClass]="cssSlide()"
+        [@slideAnimation]="animationType"
+      /> -->
+      <div
+        *ngIf="i === currentSlide"
+        class="slide"
+        [@slideAnimation]="animationType"
+        style="background-image: url({{slide.src}});"
+      >
+        <div *ngIf="i === currentSlide" class="slide-text h-100">
+          <div class="container h-100" style="vertical-align: middle;">
+            <div class="h-100 w-100 text-box" style="display: flex; flex-direction: column; justify-content: center;">
+              <h1>{{ slide.headline }}</h1>
+              <p class="mt-5">{{ slide.description }}</p>
+              <button class="mt-5" style="max-width: 120px;" mat-raised-button color="primary" *ngIf="slide.externalLink">
+                {{ slide.btnText }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </ng-container>
+  
+    <!-- controls -->
+    <button class="control prev" (click)="onPreviousClick()">
+      <span class="arrow left"></span>
+    </button>
+    <button class="control next" (click)="onNextClick()">
+      <span class="arrow right"></span>
+    </button>
+</div>
+  

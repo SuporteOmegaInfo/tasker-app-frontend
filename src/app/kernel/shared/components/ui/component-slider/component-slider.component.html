@@ -1,0 +1,23 @@
+<div class="mlu-slider container-fluid px-0 mt-2">
+  <div class="row">    
+    <div class="col-12">
+      <div #slides class="mlu-slides pb-3">
+        <ng-content></ng-content>
+        <div class="actions">
+          <button 
+            class="navigation-button" 
+            mat-raised-button 
+            color="primary" 
+            (click)="prevSlide()"
+          >Voltar</button>
+          <button 
+            class="navigation-button" 
+            mat-raised-button 
+            color="primary" 
+            (click)="nextSlide()"
+          >Prosseguir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

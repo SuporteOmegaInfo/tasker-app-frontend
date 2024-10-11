@@ -1,0 +1,46 @@
+<div class="colorpicker-btn-container">
+  <button
+  class="colorpicker-menu mr-3"
+  (click)="openModal()"
+  mat-icon-button
+  matTooltip="Alterar cor"
+  ><mat-icon>format_color_fill</mat-icon></button>
+
+  <input class="input-previous-colorpicker text-center" *ngIf="showPrev" [ngStyle]="{
+    'background-color' : control.value,
+    'color' : getContrastYIQ(control.value)
+  }" type="text" disabled [value]="control.value">
+</div>
+
+<app-modal *ngIf="control" [clickClose]="false" id="colorpicker" cssClass="modal zoom-modal">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="ml-3">Seleção de Cores</h2>
+      <button
+        matTooltip="Cancelar"
+        color="primary"
+        (click)="closeModal()"
+        mat-icon-button
+      >
+        <mat-icon color="primary">close</mat-icon>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row" *ngFor="let item of colors">
+          <div class="col-12 py-3">
+            <h3>{{ item.name }}</h3>
+          </div>
+          <div class="col-2 mt-3" *ngFor="let color of item.colors">
+            <button [matTooltip]="color.color+' - '+color.name" (click)="selectColor(color)" class="w-100 btn-color-option" mat-button [ngStyle]="{'background-color': color.color}"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+
+</app-modal>

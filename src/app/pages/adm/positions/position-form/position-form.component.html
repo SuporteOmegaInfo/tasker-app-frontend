@@ -1,0 +1,119 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-info py-2">
+                    <h2>Perfis - <small class="text-light">Criação/Edição</small></h2>
+                </div>
+                <breadcrumb [breadcrumbs]="breadcrumbs"></breadcrumb>
+            </div>
+        </div>
+        <div class="col-12 pt-3 mb-3">
+            <div class="card p-3">
+                <form class="form pt-3" *ngIf="form" [formGroup]="form" enctype="multipart/form-data">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <form-input
+                                    [formGroup]="form"
+                                    elementId="name"
+                                    label="Nome"
+                                    placeholder=""
+                                    type="text"
+                                    masker=""
+                                    [cssClass]="applyErrorCss('name')"
+                                    [showLabel]="true"
+                                    [control]="form.get('name')"
+                                    (input)="onInput()"
+                                    [isReadOnly]="submittingForm"
+                                >
+                                </form-input>
+                            </div>
+                            <div *ngIf="validateClientAdmin" class="col-12 mt-3">
+                              <form-select
+                                  [formGroup]="form"
+                                  elementId="company_id"
+                                  [options]="companies_select"
+                                  label="Unidade"
+                                  [cssClass]="applyErrorCss('company_id')"
+                                  [showLabel]="true"
+                                  [control]="form.get('company_id')"
+                                  (input)="onInput()"
+                                  [isReadOnly]="submittingForm"
+                              >
+                              </form-select>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <form-select
+                                    [formGroup]="form"
+                                    elementId="department_id"
+                                    [options]="departments_select"
+                                    label="Departamento"
+                                    [cssClass]="applyErrorCss('department_id')"
+                                    [showLabel]="true"
+                                    [control]="form.get('department_id')"
+                                    (input)="onInput()"
+                                    [isReadOnly]="submittingForm"
+                                >
+                                </form-select>
+                            </div>
+                            <div class="col-12">
+                                <div class="checkbox-group pt-3">
+                                    <h3>Permissões do Departamento</h3>
+                                    <hr class="mt-3 w-100">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-md-3 my-3" *ngFor="let permission of dep_permissions; let i = index">
+                                                <mat-checkbox
+                                                    [checked]="true"
+                                                    color="primary"
+                                                    disabled
+                                                >
+                                                {{ permission.label }}
+                                                </mat-checkbox>
+                                            </div>
+                                            <div class="col-12" *ngIf="dep_permissions?.length == 0">
+                                                <div class="alert info my-3">
+                                                    <p>Nenhuma permissão vinculada ao Departamento</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="checkbox-group pt-3">
+                                    <h3>Permissões</h3>
+                                    <hr class="mt-3 w-100">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-md-3 my-3" *ngFor="let permission of permissionsArray.value; let i = index">
+                                                <mat-checkbox
+                                                    [(ngModel)]="permission.checked"
+                                                    [ngModelOptions]="{ standalone: true }"
+                                                    color="primary"
+                                                >
+                                                {{ permission.label }}
+                                                </mat-checkbox>
+                                            </div>
+                                            <div class="col-12" *ngIf="permissionsArray.value.length == 0">
+                                                <div class="alert info my-3">
+                                                    <p>Nenhuma permissão vinculada ao Departamento</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 pt-3">
+                                <button (click)="submit()" mat-raised-button color="primary" class="p-2">
+                                    {{ currentAction == 'new' ? 'Criar' : 'Salvar alterações' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

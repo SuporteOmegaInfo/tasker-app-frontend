@@ -1,0 +1,106 @@
+<div class="paginator" *ngIf="pagination">
+
+  <div class="filters-group">
+    <button (click)="toggleMenu()" mat-icon-button [color]="menuOpened ? 'warn' : 'primary'">
+      <mat-icon>
+        {{ menuOpened ? 'remove' : 'tune'}}
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="size-group">
+
+      <mat-label class="mat-desc mr-3">Itens por página</mat-label>
+
+      <mat-form-field style="width: 100px;">
+          <mat-select
+              [(ngModel)]="pagination.per_page"
+              [ngModelOptions]="{ standalone: true }"
+              [value]="pagination.per_page"
+              (selectionChange)="changePerPage()"
+          >
+            <mat-option *ngFor="let item of options.pageSizes" [value]="item">
+              {{item}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+  </div>
+
+  <div class="info-group">
+      <span class="mat-desc">{{ paginateInfo() }}</span>
+  </div>
+
+  <div class="navigation-group">
+
+      <button color="primary" [disabled]="pagination.page == 1" (click)="gotoFirstPage()" mat-button matTooltip="Primeira página">
+          <mat-icon>first_page</mat-icon>
+      </button>
+
+      <button color="primary" [disabled]="pagination.page == 1" (click)="gotoPageBackward()" mat-button matTooltip="Página anterior">
+          <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <button color="primary" [disabled]="pagination.page == pagination.last_page" (click)="gotoPageForward()" mat-button matTooltip="Próxima página">
+          <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <button color="primary" [disabled]="pagination.page == pagination.last_page" (click)="gotoLastPage()" mat-button matTooltip="Última página">
+          <mat-icon>last_page</mat-icon>
+      </button>
+
+  </div>
+
+  <div #filtersMenu class="filters-menu">
+    <div class="filters-container p-3" *ngIf="localFilters">
+      <div class="filter mb-3" *ngFor="let filter of localFilters">
+        <div [ngSwitch]="filter.type">
+          <div *ngSwitchCase="'string'">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ filter.placeholder }}</mat-label>
+              <input matInput
+                class="form-control"
+                color="primary" 
+                type="text"
+                autocomplete="on"
+                [(ngModel)]="filter.value"
+                [ngModelOptions]="{standalone: true}"
+              >
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'dropdown'">
+            <mat-form-field class="form-control" appearance="outline">
+              <mat-label>{{filter.placeholder}}</mat-label>
+              <mat-select
+                  [(ngModel)]="filter.value"
+                  [ngModelOptions]="{ standalone: true }"
+                  [value]="filter.value"
+              >
+                <mat-option *ngFor="let item of filter.options" [value]="item.id">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'order'">
+            <mat-form-field class="form-control" appearance="outline">
+              <mat-label>{{filter.placeholder}}</mat-label>
+              <mat-select
+                  [(ngModel)]="filter.value"
+                  [ngModelOptions]="{ standalone: true }"
+              >
+                <mat-option *ngFor="let item of filter.options" [value]="item.field+'-'+item.orientation">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <button (click)="emitFilters()" mat-raised-button color="primary" class="px-4 py-2">Filtrar</button>
+      <button (click)="cleanFilters()" mat-raised-button color="warn" class="ml-3 px-4 py-2">Limpar filtros</button>
+    </div>
+  </div>
+
+</div>
+

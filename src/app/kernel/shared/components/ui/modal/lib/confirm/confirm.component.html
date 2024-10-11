@@ -1,0 +1,15 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Atenção</h5>
+        <div class="modal-subtitle">
+            <small>Esta ação precisa ser revista.</small>
+        </div>
+    </div>
+    <div class="modal-body">
+        <p>{{ text }}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="p-2 mr-3" mat-raised-button color="warn" (click)="confirm(false)">Não</button>
+        <button class="p-2" mat-raised-button color="primary" (click)="confirm(true)">Sim</button>
+    </div>
+</div>
