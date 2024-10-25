@@ -11,6 +11,9 @@ import { FormControl } from '@angular/forms';
 export class FormColorpickerComponent implements AfterViewChecked{
 
   colors: any[] = []
+  infoGroupName: string = 'Nome da paleta de cores'
+  infoSelectedColor: string = 'Nome da cor selecionada'
+  infoSelectedColorHex: string = 'Hex da cor'
 
   @Input() control: FormControl
   @Input() showPrev: boolean = false
@@ -57,6 +60,19 @@ export class FormColorpickerComponent implements AfterViewChecked{
     // Se o valor de YIQ for maior que 128, a cor é clara, então o contraste será preto
     // Caso contrário, o contraste será branco
     return yiq >= 128 ? '#495057' : '#fff';
+  }
+
+  colorHighlight(item: any, color: any){
+    this.infoGroupName = item.name
+    this.infoSelectedColor = color.name
+    this.infoSelectedColorHex = color.color
+  }
+
+  mouseOutColor(){
+    console.log('aa')
+    this.infoGroupName = 'Nome da paleta de cores'
+    this.infoSelectedColor = 'Nome da cor selecionada'
+    this.infoSelectedColorHex = 'Hex da cor'
   }
 
   openModal(){

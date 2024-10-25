@@ -9,6 +9,8 @@ export class IUser {
         public name?: string,
         public slug?: string,
         public email?: string,
+        public cpf?: string,
+        public phone?: string,
         public remember_me_token?: string,
         public position_id?: number,
         public position?: IPosition,

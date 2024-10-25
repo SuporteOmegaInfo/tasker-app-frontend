@@ -354,16 +354,16 @@ hr{
   color: $danger;
 }
 .text-center{
-  text-align: center;
+  text-align: center !important;
 }
 .text-left{
-  text-align: left;
+  text-align: left !important;
 }
 .text-right{
-  text-align: right;
+  text-align: right !important;
 }
 .text-bold{
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .hidden{
@@ -440,6 +440,36 @@ hr{
   color: $white;
 }
 
+.badge{
+  padding: 5px;
+  border-radius: 5px;
+  background-color: $light-gray;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $border-general-color;
+
+  &.badge-warning{
+    background-color: $warning;
+    border: 1px solid $warning-opack;
+  }
+  &.badge-danger{
+    background-color: $danger;
+    border: 1px solid $danger-opack;
+    color: $white !important;
+
+    mat-icon{color: $white !important;}
+  }
+  &.badge-critical{
+    background-color: $orange;
+    border: 1px solid $danger-opack;
+    color: $white !important;
+
+    mat-icon{color: $white !important;}
+  }
+}
+
 //Iniciando Estilização
 #content {
   display: flex;
@@ -514,6 +544,10 @@ hr{
 
 }
 /** NAVBAR  End*/
+
+.cursor-pointer{
+  cursor: pointer;
+}
 
 /** SIDEBAR */
 .sidebar {
@@ -1058,9 +1092,6 @@ body.app-modal-open {
 // END MODAL STYLES
 
 /* Color Picker */
-.colorpicker-menu{
-  border: 2px solid $light-gray !important;
-}
 .btn-color-option{
   border: 2px solid $text-color !important;
 }
@@ -1632,6 +1663,11 @@ button.loading {
   padding: 0px 15px !important;
   color: $white !important;
 }
+.btn-menu{
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+}
 /* BUTTONS END */
 
 /* PAGE LOADER */
@@ -1744,13 +1780,44 @@ button.loading {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   overflow-x: auto;
 
   .list{
-    background-color: $white;
+    background-color: $bg-color;
     border-radius: 5px;
     flex: 0 0 250px;
+
+    .list-header{
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+      position: relative;
+
+      .list-menu-button{
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        margin-left: auto;
+      }
+
+      .kanban-step-unsaved-changes-sinalizer{
+        position: absolute;
+        right: -25px;
+        top: -25px;
+        width: 25px;
+        height: 25px;
+        border-radius: 5px;
+        border: 1px solid $primary-color-opack;
+        background-color: $primary-color;
+        cursor: pointer;
+
+        mat-icon{
+          color: $white !important;
+        }
+      }
+    }
 
     &.add-button{
       cursor: pointer;
@@ -1768,7 +1835,85 @@ button.loading {
     color: $text-color !important;
   }
 }
+.kanban-step-form{
+  display: flex;
+}
+.members-container-overflow{
+  max-height: 130px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 /* Tasker Kanban End*/
+
+/* Tasker Colorpicker*/
+.tasker-colorpicker{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  .colorpicker-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+
+
+    .tasker-selected-color{
+      width: 200px;
+      height: 50px;
+      border-radius: 5px;
+      @include trxAll(0.2s);
+      box-shadow: 1px 1px 3px $shadow-color;
+      border: 1px solid $border-general-color;
+    }
+  }
+
+  .tasker-color-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    .tasker-color-block{
+      width: 40px;
+      height: 20px;
+      box-shadow: 1px 1px 3px $shadow-color;
+      border: 1px solid $border-general-color;
+      cursor: pointer;
+      transform: scale(1);
+      z-index: 1;
+
+      &:hover{
+        transform: scale(1.2);
+        z-index: 2;
+      }
+    }
+  }
+}
+/* Tasker Colorpicker End*/
+
+/* Date Steps */
+.dateStepGroup{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+.dateStepInput{
+  text-align: center;
+  border-radius: 5px;
+  height: 40px;
+  border: 1px solid transparent;
+  font-size: 1rem;
+  color: $text-color;
+}
+/* Date Steps End*/
 
 /* AVATAR */
 .btn-remove-avatar{
@@ -1829,6 +1974,31 @@ button.loading {
     font-size: 0.8rem;
   }
 }
+.avatar-line{
+  &:hover{
+    .mini-avatar{
+      .btn-remove-avatar{
+        display: block !important;
+      }
+    }
+    .mid-avatar{
+      .btn-remove-avatar{
+        display: block !important;
+      }
+    }
+  }
+
+}
+.avatar-select-line{
+  cursor: pointer;
+  @include trxAll(0.2s);
+  padding: 5px 15px;
+  border-radius: 5px;
+
+  &:hover{
+    background-color: $border-general-color;
+  }
+}
 /* AVATAR END */
 
 
@@ -1838,6 +2008,32 @@ button.loading {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
+
+  .avatar{
+    flex: 1;
+  }
+
+  span{
+    flex: 6
+  }
+
+  .remove-avatar{
+    flex:1;
+    display: none;
+    width: 25px !important;
+    height: 25px !important;
+    position: absolute;
+    top: 0;
+    right: 15px !important;
+    padding: 0;
+  }
+
+  &:hover{
+    .remove-avatar{
+      display:inline-block !important;
+    }
+  }
 }
 
 

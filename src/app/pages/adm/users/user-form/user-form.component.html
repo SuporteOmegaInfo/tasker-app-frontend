@@ -45,7 +45,39 @@
                                 >
                                 </form-input>
                             </div>
-                            <div class="col-12 mt-3" *ngIf="canChangeCompanies()">
+                            <div class="col-12 mt-3">
+                              <form-input
+                                  [formGroup]="form"
+                                  elementId="cpf"
+                                  label="CPF"
+                                  placeholder=""
+                                  type="text"
+                                  masker="000.000.000-00"
+                                  [cssClass]="applyErrorCss('cpf')"
+                                  [showLabel]="true"
+                                  [control]="form.get('cpf')"
+                                  (input)="onInput()"
+                                  [isReadOnly]="submittingForm"
+                              >
+                              </form-input>
+                          </div>
+                          <div class="col-12 mt-3">
+                            <form-input
+                                [formGroup]="form"
+                                elementId="phone"
+                                label="Telefone"
+                                placeholder=""
+                                type="text"
+                                masker="(00) 00000-0000"
+                                [cssClass]="applyErrorCss('phone')"
+                                [showLabel]="true"
+                                [control]="form.get('phone')"
+                                (input)="onInput()"
+                                [isReadOnly]="submittingForm"
+                            >
+                            </form-input>
+                          </div>
+                            <!-- <div class="col-12 mt-3" *ngIf="canChangeCompanies()">
                               <form-select
                                   [formGroup]="form"
                                   elementId="company_id"
@@ -58,7 +90,7 @@
                                   [isReadOnly]="submittingForm"
                               >
                               </form-select>
-                          </div>
+                            </div> -->
                             <div class="col-12 mt-3">
                                 <form-select
                                     [formGroup]="form"

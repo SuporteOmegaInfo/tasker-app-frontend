@@ -5,67 +5,60 @@
       'box-shadow' : styleCardShadow(darkenColorPercent(project.color, 15))
       }">
       <form *ngIf="form" [formGroup]="form" enctype="multipart/form-data">
-        <div style="flex: 3">
+        <div style="flex: 4" class="text-center">
           <input class="hidden-input w-100" type="text" formControlName="name">
         </div>
-        <div style="flex: 2" class="date-group">
+        <div style="flex: 3" class="text-center date-group">
           <small>Data de entrega: </small>
           <input [matDatepicker]="picker" class="hidden-input ml-3 date-input" type="text" formControlName="expires_at">
           <mat-datepicker-toggle color="primary" matTooltip="Alterar Data" matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
-        <div style="flex: 1" class="time-group">
+        <div style="flex: 2" class="text-center time-group">
           <input [ngxTimepicker]="timePicker" [format]="24" class="hidden-input ml-3 time-input" type="text" formControlName="expires_at_2">
           <ngx-material-timepicker-toggle matTooltip="Alterar Hora" [for]="timePicker">
-            <mat-icon class="mr-1 picker-icon" matSuffix ngxMaterialTimepickerToggleIcon>timer</mat-icon>
+            <button class="picker-icon flex-row-center-center" matSuffix ngxMaterialTimepickerToggleIcon mat-icon-button>
+              <mat-icon>timer</mat-icon>
+            </button>
           </ngx-material-timepicker-toggle>
           <ngx-material-timepicker [format]="24" #timePicker></ngx-material-timepicker>
         </div>
-        <div style="flex: 1" >
+        <div style="flex: 2" class="text-center">
           <button
-            [ngClass]="{ loading: submittingForm }"
             mat-icon-button
             matTooltip="Membros"
             (click)="openMembers()"
+            class="topper-menu-button"
           ><mat-icon [ngStyle]="{ 'color' : getContrastYIQ(project.color) }">group</mat-icon></button>
         </div>
-        <div style="flex: 1">
+        <div style="flex: 2" class="text-center">
           <form-colorpicker
             (changed)="refreshThemeColor()"
             [control]="form.get('color')"
           ></form-colorpicker>
         </div>
-        <div style="flex: 1" >
+        <div style="flex: 1" class="text-center">
+          <figure [matTooltip]="'Autor(a): '+project.author.name" class="mini-avatar mb-0 mr-3">
+            <img src="./../../../../../../assets/images/avatar.webp">
+          </figure>
+        </div>
+        <div style="flex: 1" class="text-center">
           <button
             [ngClass]="{ loading: submittingForm }"
             class="py-2"
             *ngIf="form.dirty"
             mat-raised-button
             color="primary"
+            (click)="submit()"
           >Salvar Alterações</button>
         </div>
       </form>
     </div>
     <div class="col-12 px-0"><hr [ngStyle]="{ 'border-color' : darkenColorPercent(project.color, 15)}" class="w-100"></div>
   </div>
-  <!-- <div class="row">
-    <pre>{{ project | json }}</pre>
-  </div> -->
-  <div class="row" *ngIf="project">
+  <div class="row" style="height: calc(100% - 80px);" *ngIf="project">
     <div class="col-12">
-      <div class="tasker-kanban py-3">
-        <div class="list add-button mr-3 px-3 text-center" [ngStyle]="{ 'background-color': lightenColorPercent(project.color, 50) }">
-          <div (click)="isAdding = true" class="flex-row-center-center py-3" *ngIf="!isAdding">
-            <mat-icon>add</mat-icon>
-            Adicionar nova Lista
-          </div>
-          <div class="flex-row-center-center py-3" *ngIf="isAdding">
-            <input placeholder="Nome da Lista" type="text" class="input-add-list">
-            <button mat-raised-button color="primary" class="p-2"><span style="color: #f1f1f1 !important">Incluir Lista</span></button>
-            <button (click)="isAdding = false" mat-icon-button color="primary"><mat-icon>close</mat-icon></button>
-          </div>
-        </div>
-      </div>
+      <tasker-kanban [project]="project"></tasker-kanban>
     </div>
   </div>
   <div class="row" *ngIf="!project">
@@ -75,4 +68,4 @@
     </div>
   </div>
 </div>
-<members-modal></members-modal>
+<members-modal [data]="membersArray"></members-modal>

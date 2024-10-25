@@ -78,10 +78,11 @@ export abstract class ResourceFormComponent<T extends IBaseEntity> extends BaseF
           // } else {
           //   this.router.navigate([this.service.entityOptions.entityData.route, result.data.id, 'edit'], { skipLocationChange: true });
           // }
-          
+
           this.mainServ.toggleLoading(false)
+          this.mainServ.toggleSubmitting(false)
           this.mainServ.sendToastr('success', `${this.service.entityOptions.entityData.singularName} ${data.name} atualizad${this.service.entityOptions.entityData.singularArticle} com sucesso!`)
-        
+
           const baseComponentPath: string = this.route.snapshot.parent.url[0].path;
 
           this.router
@@ -94,10 +95,11 @@ export abstract class ResourceFormComponent<T extends IBaseEntity> extends BaseF
             }
           });
 
-        
+
         },
         error => {
           this.mainServ.toggleLoading(false)
+          this.mainServ.toggleSubmitting(false)
           this.mainServ.sendDefaultErrorToastr(error)
         }
       )

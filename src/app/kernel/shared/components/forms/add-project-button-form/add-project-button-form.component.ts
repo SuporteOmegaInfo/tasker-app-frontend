@@ -19,29 +19,6 @@ import { FormValidations } from '../inputs/tools/form-validations';
 })
 export class AddProjectButtonFormComponent extends  BaseFormComponent implements OnInit {
 
-  commonColors = [
-    "#FFFFFF", // Branco
-    "#000000", // Preto
-    "#FF0000", // Vermelho
-    "#00FF00", // Verde
-    "#0000FF", // Azul
-    "#FFFF00", // Amarelo
-    "#FF00FF", // Magenta (Rosa)
-    "#00FFFF", // Ciano
-    "#808080", // Cinza
-    "#800000", // Marrom
-    "#808000", // Verde Oliva
-    "#800080", // Roxo
-    "#008080", // Verde-azulado
-    "#C0C0C0", // Prata
-    "#FFA500", // Laranja
-    "#A52A2A", // Marrom Avermelhado
-    "#008000", // Verde Escuro
-    "#ADD8E6", // Azul Claro
-    "#FFC0CB", // Rosa Claro
-    "#F5F5DC", // Bege
-  ];
-
   users: IUser[] = []
 
   @Output('project-added') projectAdded = new EventEmitter<IProject>(null)

@@ -68,6 +68,9 @@ import { TablePaginatorComponent } from './components/ui/table/table-paginator/t
 import { ScrollHeaderDirective } from './directives/scroll-header.directive';
 import { MembersModalComponent } from './components/ui/modal/lib/members-modal/members-modal.component';
 import { FormColorpickerComponent } from './components/forms/inputs/form-colorpicker/form-colorpicker.component';
+import { FormTextToInputComponent } from './components/forms/inputs/form-text-to-input/form-text-to-input.component';
+import { TaskerKanbanComponent } from './components/ui/tasker-kanban/tasker-kanban.component';
+import { TaskerKanbanStepFormComponent } from './components/forms/tasker-kanban-step-form/tasker-kanban-step-form.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +100,9 @@ import { FormColorpickerComponent } from './components/forms/inputs/form-colorpi
     FormTimepickerComponent,
     MembersModalComponent,
     FormColorpickerComponent,
+    FormTextToInputComponent,
+    TaskerKanbanComponent,
+    TaskerKanbanStepFormComponent,
   ],
   imports: [
     CommonModule,
@@ -218,6 +224,9 @@ import { FormColorpickerComponent } from './components/forms/inputs/form-colorpi
     AddProjectButtonFormComponent,
     MembersModalComponent,
     FormColorpickerComponent,
+    FormTextToInputComponent,
+    TaskerKanbanComponent,
+    TaskerKanbanStepFormComponent,
 
     //Diretivas
     ScrollHeaderDirective,

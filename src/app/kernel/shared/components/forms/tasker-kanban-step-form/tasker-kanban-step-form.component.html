@@ -1,0 +1,162 @@
+<form [formGroup]="form" class="w-100 kanban-step-form">
+  <button matTooltip="Há alterações feitas no formulário que não foram salvas" *ngIf="form.dirty && form.touched" [matMenuTriggerFor]="unsavedChanges" class="kanban-step-unsaved-changes-sinalizer">
+    <mat-icon>save</mat-icon>
+  </button>
+  <mat-menu #unsavedChanges="matMenu">
+    <ul (click)="$event.stopPropagation();">
+      <li><div class="alert info m-1">Há alterações feitas no formulário que não foram salvas, deseja aplicar as alterações?</div></li>
+      <li class="text-center">
+        <button
+          [ngClass]="{ 'loading': this.submittingForm }"
+          (click)="submit()"
+          mat-raised-button
+          class="py-2 mt-3"
+          color="primary"
+        >
+          Salvar Alterações
+        </button>
+      </li>
+    </ul>
+  </mat-menu>
+  <form-text-to-input style="width: 100%;" [(text)]="project_step.name" (textChanged)="changedStepText($event, project_step)"></form-text-to-input>
+  <button [matMenuTriggerFor]="listOptionsMenu" class="list-menu-button" mat-icon-button><mat-icon>more_vert</mat-icon></button>
+  <mat-menu #listOptionsMenu="matMenu">
+      <ul>
+        <li (click)="$event.stopPropagation();">
+          <button class="w-100 btn-menu" [matMenuTriggerFor]="datesStepMenu" mat-button>
+            <mat-icon color="primary">date_range</mat-icon>
+            Definir data de entrega
+          </button>
+          <mat-menu #datesStepMenu="matMenu">
+            <div (click)="$event.stopPropagation();" class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="pt-3 dateStepGroup">
+                    <label [for]="stepDatePicker">Data</label>
+                    <mat-datepicker-toggle matSuffix [for]="stepDatePicker">
+                      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+                    </mat-datepicker-toggle>
+                    <input
+                      class="dateStepInput"
+                      [matDatepicker]="stepDatePicker"
+                      color="primary"
+                      type="text"
+                      masker="00/00/0000"
+                      [placeholder]="!project_step.expires_at ? 'Não Definido' : ''"
+                      formControlName="expires_at"
+                    >
+                    <mat-datepicker #stepDatePicker></mat-datepicker>
+                  </div>
+                  <div class="dateStepGroup">
+                    <label class="mr-2" [for]="stepTimePicker">Hora</label>
+                    <ngx-material-timepicker-toggle  [for]="stepTimePicker">
+                      <mat-icon matSuffix ngxMaterialTimepickerToggleIcon>timer</mat-icon>
+                    </ngx-material-timepicker-toggle>
+                    <input
+                      class="dateStepInput"
+                      [ngxTimepicker]="stepTimePicker"
+                      [disableClick]="true"
+                      [format]="24"
+                      color="primary"
+                      type="text"
+                      [placeholder]="!getField('expires_at_2').value ? 'Não Definido' : ''"
+                      formControlName="expires_at_2"
+                    >
+                    <ngx-material-timepicker [format]="24" #stepTimePicker></ngx-material-timepicker>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button *ngIf="getField('expires_at').dirty" [ngClass]="{ 'loading': this.submittingForm }" (click)="submit()" mat-raised-button class="py-2 mt-3" color="primary">Salvar Alterações</button>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+        </li>
+        <li (click)="$event.stopPropagation();">
+          <button class="w-100 btn-menu" [matMenuTriggerFor]="stepMembersMenu" mat-button>
+            <mat-icon color="primary">group</mat-icon>
+            Membros
+          </button>
+          <mat-menu #stepMembersMenu="matMenu">
+            <div (click)="$event.stopPropagation();" class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <h3>Membros Selecionados</h3>
+                </div>
+                <div class="col-12 mt-3 mb-1">
+                  <hr class="w-100">
+                </div>
+                <div class="col-12 mb-3" *ngIf="membersArray.value.length == 0">
+                  <div class="alert info">
+                    Nenhum usuário selecionado
+                  </div>
+                </div>
+                <div class="col-12 members-container-overflow">
+                  <div *ngFor="let user of membersArray.value" class="flex-link fadeIn my-2" [attr.id]="'member-' + i">
+                    <div class="avatar">
+                      <figure class="mini-avatar mb-0 mr-3">
+                        <img src="./../../../../../../assets/images/avatar.webp">
+                      </figure>
+                    </div>
+                    <span>{{ user.id }} - {{ user.name }}</span>
+                    <button
+                      (click)="removeStepMember(user)"
+                      class="remove-avatar"
+                      color="primary"
+                      mat-icon-button
+                    >
+                      <mat-icon color="primary">close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12 mb-3">
+                  <hr class="w-100">
+                </div>
+                <div class="col-12">
+                  <h3>Membros disponíveis</h3>
+                </div>
+                <div class="col-12 my-3">
+                  <hr class="w-100">
+                </div>
+                <div class="col-12 my-3 members-container-overflow">
+                  <div *ngFor="let user of stepMembersAvailable()" (click)="addStepMember(user)" class="flex-link cursor-pointer fadeIn mt-2" [attr.id]="'member-' + i">
+                    <figure class="mini-avatar mb-0 mr-3">
+                      <img src="./../../../../../../assets/images/avatar.webp">
+                    </figure>
+                    <span>{{ user.id }} - {{ user.name }}</span>
+                  </div>
+                </div>
+                <div class="col-12 mb-3" *ngIf="stepMembersAvailable().length == 0">
+                  <div class="alert info">
+                    Nenhum usuário disponível
+                  </div>
+                </div>
+                <div class="col-12 mt-3">
+                  <button
+                    *ngIf="membersArray.dirty"
+                    (click)="submit()"
+                    [ngClass]="{ 'loading' : submittingForm }"
+                    mat-raised-button
+                    color="primary"
+                    class="p-2"
+                  >Salvar alterações</button>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+        </li>
+        <li (click)="$event.stopPropagation();">
+          <button class="w-100 btn-menu" [matMenuTriggerFor]="deleteStepMenu" mat-button>
+            <mat-icon color="warn">delete_outline</mat-icon>
+            <span>Excluir etapa</span>
+          </button>
+          <mat-menu #deleteStepMenu="matMenu">
+            <ul>
+              <li><div class="alert info m-1">Tem certeza que deseja excluir esta etapa? Esta ação será irreversível</div></li>
+              <li><button (click)="deleteStep()" mat-button>Sim</button> <button mat-button>Cancelar</button></li>
+            </ul>
+          </mat-menu>
+        </li>
+      </ul>
+  </mat-menu>
+</form>

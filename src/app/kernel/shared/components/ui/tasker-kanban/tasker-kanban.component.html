@@ -1,0 +1,26 @@
+<div class="tasker-kanban py-3 h-100" *ngIf="project.steps">
+  <div class="list mr-3 p-3 text-center" *ngFor="let item of project.steps; let i = index">
+    <div class="list-header">
+      <tasker-kanban-step-form class="w-100" (step-saved)="updateStepSaved($event)" [project]="project" [project_step]="item"></tasker-kanban-step-form>
+    </div>
+    <div class="list-body">
+      <div *ngIf="item.expires_at" class="badge" [ngClass]="cssDateSticker(item)">
+        <mat-icon class="mr-2">date_range</mat-icon>
+        {{ item.expires_at | date: 'dd/MM/yyy HH:mm' }}
+      </div>
+      <button mat-button><mat-icon color="accent">add</mat-icon>Adicionar Tarefa</button>
+      <!-- <pre>{{ item | json }}</pre> -->
+    </div>
+  </div>
+  <div class="list add-button mr-3 px-3 text-center" [ngStyle]="{ 'background-color': lightenColorPercent(project.color, 50) }">
+    <div (click)="isAdding = true" class="flex-row-center-center py-3" *ngIf="!isAdding">
+      <mat-icon>add</mat-icon>
+      Adicionar nova Etapa
+    </div>
+    <div class="flex-row-center-center py-3" *ngIf="isAdding">
+      <input [(ngModel)]="newStepName" placeholder="Nome da Etapa" type="text" class="input-add-list">
+      <button [ngClass]="{loading : submittingForm}" (click)="createProjectStep()" mat-raised-button color="primary" class="p-2"><span style="color: #f1f1f1 !important">Incluir Etapa</span></button>
+      <button (click)="isAdding = false" mat-icon-button color="primary"><mat-icon>close</mat-icon></button>
+    </div>
+  </div>
+</div>

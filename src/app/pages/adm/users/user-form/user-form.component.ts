@@ -4,6 +4,7 @@ import { skip } from 'rxjs';
 
 import { MainService } from '../../../../kernel/core/services/main.service';
 import { ResourceFormComponent } from '../../../../kernel/shared/components/base/resource-form/resource-form.component';
+import { FormValidations } from '../../../../kernel/shared/components/forms/inputs/tools/form-validations';
 import { ICompany } from '../../../../kernel/shared/entities/company';
 import { IDepartment } from '../../../../kernel/shared/entities/department';
 import { IPermission } from '../../../../kernel/shared/entities/permission';
@@ -82,6 +83,22 @@ export class UserFormComponent extends ResourceFormComponent<IUser> implements O
           Validators.email,
           Validators.minLength(3),
           Validators.maxLength(80),
+        ],
+      ],
+      cpf: [
+        null,
+        [
+          Validators.required,
+          FormValidations.cpfValidator,
+          Validators.minLength(1),
+          Validators.maxLength(11),
+        ],
+      ],
+      phone: [
+        null,
+        [
+          Validators.minLength(1),
+          Validators.maxLength(11),
         ],
       ],
       department_id: [null],

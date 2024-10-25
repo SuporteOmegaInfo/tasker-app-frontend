@@ -1,0 +1,18 @@
+<div class="input-to-text">
+  <h4
+    *ngIf="!isEdditingStepName"
+    class="w-100"
+    (click)="goToEditting()"
+  >
+    {{ text }}
+  </h4>
+  <input
+    *ngIf="isEdditingStepName"
+    class="w-100"
+    #inp
+    (focusout)="focusOut()"
+    type="text"
+    [(ngModel)]="text"
+    (change)="onChange($event)"
+  >
+</div>

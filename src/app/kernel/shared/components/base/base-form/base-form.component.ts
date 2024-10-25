@@ -14,7 +14,7 @@ export abstract class BaseFormComponent implements OnDestroy {
   submittingForm: boolean = false;
   loading: boolean = false;
   formChange: boolean = false;
-  
+
   protected route: ActivatedRoute;
   protected router: Router;
   protected formBuilder: FormBuilder;
@@ -30,6 +30,7 @@ export abstract class BaseFormComponent implements OnDestroy {
     this.router = this.injector.get(Router);
     this.formBuilder = this.injector.get(FormBuilder);
     this.mainServ.currentLoading.subscribe(ld => this.loading = ld)
+    this.mainServ.currentSubmitting.subscribe(ld => this.submittingForm = ld)
   }
 
   onInput() {

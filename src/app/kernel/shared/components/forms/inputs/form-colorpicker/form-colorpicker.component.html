@@ -28,14 +28,36 @@
     </div>
     <div class="modal-body">
       <div class="container-fluid">
-        <div class="row" *ngFor="let item of colors">
+        <div class="tasker-colorpicker">
+          <div class="colorpicker-info">
+            <div>
+              <h2>{{ infoGroupName }}</h2>
+              <h3 class="mt-3">{{ infoSelectedColor }}</h3>
+              <h4 class="my-3">{{ infoSelectedColorHex }}</h4>
+            </div>
+            <div>
+              <div class="tasker-selected-color" [ngStyle]="{'background-color': infoSelectedColorHex || 'transparent'}"></div>
+            </div>
+          </div>
+          <div class="tasker-color-group" *ngFor="let item of colors">
+            <div
+            (mouseover)="colorHighlight(item, color)"
+            (mouseout)="mouseOutColor()"
+            class="tasker-color-block"
+            *ngFor="let color of item.colors"
+            [ngStyle]="{'background-color': color.color}"
+            (click)="selectColor(color)"
+            ></div>
+          </div>
+        </div>
+        <!-- <div class="row" *ngFor="let item of colors">
           <div class="col-12 py-3">
             <h3>{{ item.name }}</h3>
           </div>
           <div class="col-2 mt-3" *ngFor="let color of item.colors">
             <button [matTooltip]="color.color+' - '+color.name" (click)="selectColor(color)" class="w-100 btn-color-option" mat-button [ngStyle]="{'background-color': color.color}"></button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="modal-footer">

@@ -1,16 +1,18 @@
 import { AfterViewChecked, Component, Injector, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IProject } from '../../../../kernel/shared/entities/project';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
-import { ProjectService } from '../shared/project.service';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { format } from 'date-fns';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+
 import { MainService } from '../../../../kernel/core/services/main.service';
 import { BaseFormComponent } from '../../../../kernel/shared/components/base/base-form/base-form.component';
-import { FormArray, FormControl, Validators } from '@angular/forms';
 import { FormValidations } from '../../../../kernel/shared/components/forms/inputs/tools/form-validations';
-import { format } from 'date-fns';
 import { ModalService } from '../../../../kernel/shared/components/ui/modal/modal.service';
-import { UserService } from '../../../adm/users/shared/user.service';
+import { IProject, IProjectStep } from '../../../../kernel/shared/entities/project';
 import { IUser } from '../../../../kernel/shared/entities/user';
+import { UserService } from '../../../adm/users/shared/user.service';
+import { ProjectStepService } from '../../project-steps/shared/project-step.service';
+import { ProjectService } from '../shared/project.service';
 
 @Component({
   selector: 'app-project',
@@ -21,8 +23,8 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
 
   project: IProject
   sub: Subscription[] = []
-  isAdding: boolean = false
   membersList: IUser[] = []
+  toggleModal: BehaviorSubject<any> = new BehaviorSubject<any>(null)
 
   /**
    *
@@ -30,6 +32,7 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
   constructor(
     protected mainServ: MainService,
     protected proServ: ProjectService,
+    protected proStServ: ProjectStepService,
     protected router: Router,
     protected route: ActivatedRoute,
     protected injector: Injector,
@@ -37,15 +40,16 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
     protected usServ: UserService
   ) {
     super(injector,mainServ);
-    this.setCurrentAction();
+    this.loadPageData();
   }
 
   ngAfterViewChecked(): void {
+    //Tratamento para padronização dos ícones do datepicker ded acordo com a dinâmica de tema do projeto
     let iconsToChangeColor = Array.from(document.querySelectorAll('.mat-datepicker-toggle-default-icon, .picker-icon'));
     if(iconsToChangeColor.length > 0){
       iconsToChangeColor.map(item => {
 
-        let color = this.getContrastYIQ(this.project.color)
+        let color = this.getContrastYIQ(this.project?.color)
 
         if (item instanceof HTMLElement) {
           item.style.setProperty('color', color, 'important');
@@ -128,9 +132,59 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
   }
 
   protected submit(): void {
+
+    this.mainServ.toggleSubmitting(true)
+
+    if (this.form.invalid) {
+      this.mainServ.toggleSubmitting(false);
+      this.verifyFormValidations(this.form)
+      return;
+    }
+
+    let data = this.bindFormDataToSubmit()
+
+    if(this.form.valid){
+      this.subs.push(
+        this.proServ.update(data).subscribe(
+          result => {
+            this.mainServ.toggleSubmitting(false)
+            this.mainServ.sendToastr('success', 'Projeto alterado com sucesso!')
+            const baseComponentPath: string = this.route.snapshot.parent.url[0].path;
+
+            this.router
+            .navigateByUrl(baseComponentPath, { skipLocationChange: true })
+            .then(() => {
+              if (result.data.slug) {
+                this.router.navigate([baseComponentPath, result.data.slug]);
+              } else {
+                this.router.navigate([baseComponentPath, result.data.id]);
+              }
+            });
+          },
+          error => {
+            this.mainServ.toggleSubmitting(false)
+            this.mainServ.sendDefaultErrorToastr(error)
+          }
+        )
+      )
+    }
+
   }
 
-  protected setCurrentAction(){
+  protected bindFormDataToSubmit() {
+    //Instanciando os dados do Formulário
+    let formData = this.form.value;
+
+    formData.members = []
+
+    /* Adiciona-se aqui, todas as ações necessárias para popular o formulário
+    caso necessite executar alguma ação não genérica para o Submit*/
+    formData.members = this.membersArray.value.map(({id}) => id)
+
+    return formData;
+  }
+  //Carregamento do projeto
+  protected loadPageData(){
     let id_or_slug = this.route.snapshot.url[0].path
 
     this.sub.push(
@@ -140,6 +194,14 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
 
           this.project.members.map(member => {
             this.membersArray.push(new FormControl(member))
+          })
+
+          this.project.steps = this.project.steps.map(step => {
+            let date = format(new Date(step.expires_at), 'HH:mm')
+            return {
+              ...step,
+              expires_at_2: step.expires_at ? date : null
+            }
           })
 
           this.form.patchValue(this.project)
@@ -156,6 +218,7 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
     return <FormArray>this.form.controls.members;
   }
 
+  //Escurece uma porcentagem definida de uma cor informada
   public darkenColorPercent(hex, percentual) {
     // Remove o "#" caso exista
     hex = hex.replace("#", "");
@@ -180,7 +243,7 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
 
     return newColor;
   }
-
+  //Verifica claridade da cor e aplica uma cor de contraste preta ou branca
   public getContrastYIQ(hexcolor) {
 
     if(hexcolor == '' || hexcolor == null){
@@ -202,46 +265,22 @@ export class ProjectComponent extends BaseFormComponent implements OnInit, After
     // Caso contrário, o contraste será branco
     return yiq >= 128 ? '#495057' : '#fff';
   }
-
-  public lightenColorPercent(hex: string, percentual: number): string {
-    // Remove o "#" caso exista
-    hex = hex.replace("#", "");
-
-    // Converte hexadecimal para RGB
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
-
-    // Aplica o percentual de clareamento
-    r = Math.floor(r + (255 - r) * (percentual / 100));
-    g = Math.floor(g + (255 - g) * (percentual / 100));
-    b = Math.floor(b + (255 - b) * (percentual / 100));
-
-    // Garante que os valores fiquem no intervalo [0, 255]
-    r = Math.max(0, Math.min(255, r));
-    g = Math.max(0, Math.min(255, g));
-    b = Math.max(0, Math.min(255, b));
-
-    // Converte de volta para hexadecimal
-    const newColor = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-
-    return newColor;
+  //Aplica a sombra dos cartões de acordo com a cor informada
+  public styleCardShadow(color){
+    return `3px 3px 5px ${color}`
   }
-
-  refreshThemeColor(){
+  //Aplica a alteração da cor do projeto na tela
+  public refreshThemeColor(){
     this.project.color = this.form.get('color').value
     this.getField('color').markAsDirty()
   }
-
-
+  //Abre o modal de membros do projeto
   public openMembers(){
     this.modalserv.setData(this.project)
     this.modalserv.open('members-project')
   }
 
-  public styleCardShadow(color){
-    return `3px 3px 5px ${color}`
+  ngOnDestroy() {
+    this.sub.forEach((subscription) => subscription.unsubscribe());
   }
-
-
 }
